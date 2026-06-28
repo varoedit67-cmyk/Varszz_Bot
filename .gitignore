@@ -1,0 +1,8 @@
+node_modules/
+auth_info/
+database.json
+package-lock.json
+.env
+*.log
+.DS_Store
+backup/
