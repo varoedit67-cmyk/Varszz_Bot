@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Bot Varszz - 500+ Fitur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .online { background: #00c851; color: #fff; }
+        .offline { background: #ff4444; color: #fff; }
+        .connecting { background: #ffbb33; color: #000; animation: blink 1s infinite; }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .card h3 {
+            margin-bottom: 15px;
+            color: #00d2ff;
+            font-size: 1.2rem;
+        }
+        
+        .card input, .card textarea, .card select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        
+        .card input:focus, .card textarea:focus {
+            outline: 2px solid #00d2ff;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .card textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,210,255,0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(90deg, #ff4444, #cc0000);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #00c851, #007e33);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(90deg, #ffbb33, #f57c00);
+        }
+        
+        .btn-purple {
+            background: linear-gradient(90deg, #7c4dff, #651fff);
+        }
+        
+        .flex-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .flex-row .btn {
+            width: auto;
+            flex: 1;
+        }
+        
+        /* LOG AREA */
+        .log-area {
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .log-area p {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .log-area .time {
+            color: #888;
+            margin-right: 10px;
+        }
+        
+        .log-area .success { color: #00c851; }
+        .log-area .error { color: #ff4444; }
+        .log-area .warning { color: #ffbb33; }
+        .log-area .info { color: #00d2ff; }
+        
+        /* QR & PAIRING */
+        .qr-container {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        #qrImage {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 200px;
+            margin: 10px auto;
+        }
+        
+        .pairing-code {
+            background: rgba(0,210,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin: 10px 0;
+            border: 1px dashed #00d2ff;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 5px solid #00d2ff;
+            display: none;
+            z-index: 999;
+            max-width: 350px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: 1fr; }
+            .flex-row { flex-direction: column; }
+            .flex-row .btn { width: 100%; }
+        }
+        
+        /* SCROLLBAR */
+        .log-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        .log-area::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        .log-area::-webkit-scrollbar-thumb {
+            background: #00d2ff;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🤖 Panel Bot Varszz</h1>
+        <p>🔥 500+ Fitur | GRATIS | No Termux</p>
+        <div id="statusContainer">
+            <span class="status-badge offline" id="statusBadge">⚫ Offline</span>
+        </div>
+        <p style="margin-top:10px; font-size:0.9rem; opacity:0.6;">
+            Owner: 6285753841905 | Prefix: f
+        </p>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+        <!-- KONEKSI -->
+        <div class="card">
+            <h3>🔌 Koneksi Bot</h3>
+            
+            <div class="flex-row">
+                <button class="btn btn-success" onclick="connectBot('qr')">📱 QR Login</button>
+                <button class="btn btn-purple" onclick="connectBot('pairing')">🔑 Pairing</button>
+            </div>
+            
+            <button class="btn btn-danger" onclick="disconnectBot()">⏹ Disconnect</button>
+            
+            <div id="qrSection" style="margin-top:15px; display:none;">
+                <div class="qr-container">
+                    <img id="qrImage" src="" alt="QR Code">
+                    <p style="margin-top:10px; font-size:0.9rem; opacity:0.7;">Scan pake WhatsApp</p>
+                </div>
+            </div>
+            
+            <div id="pairingSection" style="margin-top:15px; display:none;">
+                <input type="text" id="phoneNumber" placeholder="6285753841905" value="6285753841905">
+                <button class="btn btn-purple" onclick="getPairingCode()">🔑 Dapatkan Pairing Code</button>
+                <div id="pairingResult" class="pairing-code" style="display:none;"></div>
+            </div>
+            
+            <div style="margin-top:15px;">
+                <button class="btn btn-warning" onclick="checkStatus()">🔄 Cek Status</button>
+            </div>
+        </div>
+
+        <!-- KIRIM PESAN -->
+        <div class="card">
+            <h3>💬 Kirim Pesan</h3>
+            <input type="text" id="targetNumber" placeholder="628xxxx (nomor tujuan)">
+            <textarea id="messageText" placeholder="Pesan yang mau dikirim...">Halo brok! Ini dari panel admin 🔥</textarea>
+            <button class="btn" onclick="sendMessage()">📤 Kirim Sekarang</button>
+            <button class="btn btn-success" onclick="sendBroadcast()">📢 Broadcast ke Semua</button>
+        </div>
+
+        <!-- AUTO REPLY & COMMAND -->
+        <div class="card">
+            <h3>⚙️ Auto Reply</h3>
+            <div class="flex-row">
+                <button class="btn btn-success" onclick="toggleAutoReply(true)">✅ Aktifkan</button>
+                <button class="btn btn-danger" onclick="toggleAutoReply(false)">❌ Nonaktifkan</button>
+            </div>
+            <textarea id="autoReplyText" placeholder="Balasan otomatis...">Halo sayang! Ada yang bisa dibantu? 😊</textarea>
+            <button class="btn" onclick="setAutoReply()">💾 Simpan Auto Reply</button>
+            
+            <hr style="margin:15px 0; border-color:rgba(255,255,255,0.1);">
+            
+            <h3 style="color:#ffbb33;">📋 Command Custom</h3>
+            <input type="text" id="commandTrigger" placeholder="!command">
+            <input type="text" id="commandResponse" placeholder="Respon command">
+            <button class="btn" onclick="addCommand()">➕ Tambah Command</button>
+            <div id="commandList" style="margin-top:10px; max-height:150px; overflow-y:auto;"></div>
+        </div>
+
+        <!-- LOGIN METHOD -->
+        <div class="card">
+            <h3>🔐 Metode Login</h3>
+            <div class="flex-row">
+                <button class="btn btn-success" onclick="setLoginMethod('qr')">📱 QR</button>
+                <button class="btn btn-purple" onclick="setLoginMethod('pairing')">🔑 Pairing</button>
+            </div>
+            <button class="btn btn-danger" onclick="logoutBot()">🚪 Logout</button>
+            <div id="loginInfo" style="margin-top:10px; padding:10px; background:rgba(255,255,255,0.05); border-radius:10px;">
+                <p>Metode saat ini: <span id="currentMethod">Belum login</span></p>
+            </div>
+        </div>
+
+        <!-- INFO BOT -->
+        <div class="card" style="grid-column: span 1;">
+            <h3>📊 Info Bot</h3>
+            <div id="botInfo">
+                <p><strong>Nama:</strong> <span id="botName">-</span></p>
+                <p><strong>Owner:</strong> <span id="botOwner">6285753841905</span></p>
+                <p><strong>Status:</strong> <span id="botStatus">Offline</span></p>
+                <p><strong>Runtime:</strong> <span id="botRuntime">-</span></p>
+                <p><strong>Total Fitur:</strong> <span id="botFitur">500+</span></p>
+            </div>
+            <button class="btn" onclick="refreshInfo()" style="margin-top:10px;">🔄 Refresh Info</button>
+            <button class="btn btn-danger" onclick="clearLogs()" style="margin-top:5px;">🗑 Clear Log</button>
+        </div>
+    </div>
+
+    <!-- LOG ACTIVITY -->
+    <div class="card" style="margin-top:20px;">
+        <h3>📜 Log Activity</h3>
+        <div class="log-area" id="logArea">
+            <p><span class="time">[System]</span> <span class="info">Panel siap digunakan cuy! 🚀</span></p>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+    // ==================== VARIABLES ====================
+    const API_URL = window.location.origin;
+    let logCount = 0;
+    let statusInterval = null;
+
+    // ==================== UTILITY ====================
+    function addLog(message, type = 'info') {
+        const logArea = document.getElementById('logArea');
+        const time = new Date().toLocaleTimeString();
+        const colors = {
+            info: 'info',
+            success: 'success',
+            error: 'error',
+            warning: 'warning'
+        };
+        logArea.innerHTML += `<p><span class="time">[${time}]</span> <span class="${colors[type] || 'info'}">${message}</span></p>`;
+        logArea.scrollTop = logArea.scrollHeight;
+        logCount++;
+    }
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        toast.style.borderLeftColor = type === 'error' ? '#ff4444' : type === 'success' ? '#00c851' : '#00d2ff';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    function updateStatus(status) {
+        const badge = document.getElementById('statusBadge');
+        if (status === 'online') {
+            badge.className = 'status-badge online';
+            badge.textContent = '🟢 Online';
+        } else if (status === 'connecting') {
+            badge.className = 'status-badge connecting';
+            badge.textContent = '🟡 Connecting...';
+        } else {
+            badge.className = 'status-badge offline';
+            badge.textContent = '⚫ Offline';
+        }
+    }
+
+    // ==================== API CALLS ====================
+    async function connectBot(method = 'qr') {
+        addLog(`🔄 Menghubungkan bot dengan metode ${method.toUpperCase()}...`, 'info');
+        updateStatus('connecting');
+        
+        try {
+            const response = await fetch(`${API_URL}/api/connect`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ method })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                addLog(`✅ Bot berhasil connect dengan ${method.toUpperCase()}!`, 'success');
+                showToast(`Bot online dengan ${method.toUpperCase()}! 🔥`, 'success');
+                
+                if (method === 'qr') {
+                    document.getElementById('qrSection').style.display = 'block';
+                    document.getElementById('pairingSection').style.display = 'none';
+                    setTimeout(() => getQRCode(), 2000);
+                } else {
+                    document.getElementById('qrSection').style.display = 'none';
+                    document.getElementById('pairingSection').style.display = 'block';
+                }
+                
+                document.getElementById('currentMethod').textContent = method.toUpperCase();
+                updateStatus('online');
+            } else {
+                addLog(`❌ Gagal connect: ${data.message}`, 'error');
+                showToast('Gagal connect!', 'error');
+                updateStatus('offline');
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+            updateStatus('offline');
+        }
+    }
+
+    async function disconnectBot() {
+        try {
+            await fetch(`${API_URL}/api/disconnect`, { method: 'POST' });
+            addLog('🔌 Bot disconnected', 'warning');
+            updateStatus('offline');
+            document.getElementById('qrSection').style.display = 'none';
+            document.getElementById('pairingSection').style.display = 'none';
+            showToast('Bot dimatiin cuy!', 'warning');
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function getQRCode() {
+        try {
+            const response = await fetch(`${API_URL}/api/qr`);
+            const data = await response.json();
+            if (data.qr && data.qr.startsWith('data:image')) {
+                document.getElementById('qrImage').src = data.qr;
+                addLog('📱 QR Code berhasil di-generate!', 'success');
+            } else {
+                addLog('⏳ Tunggu QR Code...', 'warning');
+                setTimeout(getQRCode, 3000);
+            }
+        } catch (error) {
+            addLog(`❌ Gagal ambil QR: ${error.message}`, 'error');
+        }
+    }
+
+    async function getPairingCode() {
+        const number = document.getElementById('phoneNumber').value.trim();
+        if (!number) {
+            showToast('Masukkan nomor dulu brok!', 'error');
+            return;
+        }
+        
+        addLog(`🔑 Request pairing code untuk ${number}...`, 'info');
+        
+        try {
+            const response = await fetch(`${API_URL}/api/pairing?number=${number}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const resultDiv = document.getElementById('pairingResult');
+                resultDiv.style.display = 'block';
+                resultDiv.textContent = `🔑 Kode: ${data.pairingCode}`;
+                addLog(`✅ Pairing code berhasil: ${data.pairingCode}`, 'success');
+                showToast('Cek pairing code di layar! 📱', 'success');
+            } else {
+                addLog(`❌ Gagal pairing: ${data.error}`, 'error');
+                showToast('Gagal pairing!', 'error');
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function sendMessage() {
+        const number = document.getElementById('targetNumber').value.trim();
+        const message = document.getElementById('messageText').value.trim();
+        
+        if (!number || !message) {
+            showToast('Isi nomor dan pesan dulu!', 'error');
+            return;
+        }
+        
+        addLog(`📤 Mengirim pesan ke ${number}...`, 'info');
+        
+        try {
+            const response = await fetch(`${API_URL}/api/send`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number, message })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                addLog(`✅ Pesan terkirim ke ${number}`, 'success');
+                showToast('Pesan gas ke tujuan! 🚀', 'success');
+            } else {
+                addLog(`❌ Gagal kirim: ${data.message}`, 'error');
+                showToast('Gagal kirim pesan!', 'error');
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function sendBroadcast() {
+        const message = document.getElementById('messageText').value.trim();
+        if (!message) {
+            showToast('Isi pesan dulu!', 'error');
+            return;
+        }
+        if (!confirm('Yakin mau broadcast ke SEMUA kontak? 🔥')) return;
+        
+        addLog('📢 Mengirim broadcast...', 'warning');
+        
+        try {
+            const response = await fetch(`${API_URL}/api/broadcast`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                addLog(`✅ Broadcast terkirim ke ${data.sent} kontak`, 'success');
+                showToast(`Broadcast ke ${data.sent} kontak!`, 'success');
+            } else {
+                addLog(`❌ Gagal broadcast: ${data.message}`, 'error');
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function toggleAutoReply(active) {
+        try {
+            const response = await fetch(`${API_URL}/api/autoreply`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ active })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                addLog(`Auto reply ${active ? 'diaktifkan' : 'dinonaktifkan'}`, 'success');
+                showToast(`Auto reply ${active ? 'ON ✅' : 'OFF ❌'}`, 'success');
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function setAutoReply() {
+        const message = document.getElementById('autoReplyText').value.trim();
+        if (!message) {
+            showToast('Isi pesan auto reply dulu!', 'error');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`${API_URL}/api/autoreply`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                addLog('✅ Auto reply disimpan', 'success');
+                showToast('Auto reply updated!', 'success');
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function addCommand() {
+        const trigger = document.getElementById('commandTrigger').value.trim();
+        const response = document.getElementById('commandResponse').value.trim();
+        
+        if (!trigger || !response) {
+            showToast('Isi trigger dan response!', 'error');
+            return;
+        }
+        
+        try {
+            const resp = await fetch(`${API_URL}/api/command`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ trigger, response })
+            });
+            const data = await resp.json();
+            
+            if (data.success) {
+                addLog(`✅ Command ${trigger} ditambahkan`, 'success');
+                showToast('Command added!', 'success');
+                loadCommands();
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function loadCommands() {
+        try {
+            const response = await fetch(`${API_URL}/api/commands`);
+            const data = await response.json();
+            const listDiv = document.getElementById('commandList');
+            
+            if (data.commands && data.commands.length > 0) {
+                listDiv.innerHTML = data.commands.map(c => 
+                    `<div style="background:rgba(255,255,255,0.05); padding:8px; margin:5px 0; border-radius:5px;">
+                        <strong>${c.trigger}</strong> → ${c.response}
+                    </div>`
+                ).join('');
+            } else {
+                listDiv.innerHTML = '<p style="opacity:0.5;">Belum ada command</p>';
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function setLoginMethod(method) {
+        addLog(`🔄 Mengganti metode login ke ${method.toUpperCase()}...`, 'info');
+        
+        try {
+            const response = await fetch(`${API_URL}/api/setlogin`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ method })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                addLog(`✅ Metode login berhasil diganti ke ${method.toUpperCase()}`, 'success');
+                showToast(`Login method: ${method.toUpperCase()}`, 'success');
+                document.getElementById('currentMethod').textContent = method.toUpperCase();
+            }
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function logoutBot() {
+        if (!confirm('Yakin mau logout? Bot akan restart!')) return;
+        
+        try {
+            await fetch(`${API_URL}/api/logout`, { method: 'POST' });
+            addLog('🚪 Logout berhasil! Bot restarting...', 'warning');
+            showToast('Logout!', 'warning');
+            updateStatus('offline');
+            document.getElementById('qrSection').style.display = 'none';
+            document.getElementById('pairingSection').style.display = 'none';
+        } catch (error) {
+            addLog(`❌ Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function checkStatus() {
+        try {
+            const response = await fetch(`${API_URL}/api/status`);
+            const data = await response.json();
+            
+            if (data.status === 'online') {
+                updateStatus('online');
+                addLog('✅ Bot online!', 'success');
+                showToast('Bot online! 🔥', 'success');
+            } else if (data.status === 'connecting') {
+                updateStatus('connecting');
+                addLog('⏳ Bot connecting...', 'warning');
+            } else {
+                updateStatus('offline');
+                addLog('❌ Bot offline', 'error');
+                showToast('Bot offline!', 'error');
+            }
+            
+            document.getElementById('currentMethod').textContent = data.loginMethod || 'Belum login';
+        } catch (error) {
+            addLog(`❌ Gagal cek status: ${error.message}`, 'error');
+        }
+    }
+
+    async function refreshInfo() {
+        try {
+            const response = await fetch(`${API_URL}/api/status`);
+            const data = await response.json();
+            
+            document.getElementById('botStatus').textContent = data.status === 'online' ? '🟢 Online' : '🔴 Offline';
+            document.getElementById('botRuntime').textContent = data.runtime || '-';
+            document.getElementById('botFitur').textContent = data.totalFitur || '500+';
+            
+            addLog('🔄 Info bot direfresh', 'info');
+        } catch (error) {
+            addLog(`❌ Gagal refresh info: ${error.message}`, 'error');
+        }
+    }
+
+    function clearLogs() {
+        document.getElementById('logArea').innerHTML = `<p><span class="time">[System]</span> <span class="info">Log dibersihkan cuy! 🧹</span></p>`;
+        logCount = 0;
+    }
+
+    // ==================== AUTO STATUS CHECK ====================
+    setInterval(() => {
+        fetch(`${API_URL}/api/status`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'online') updateStatus('online');
+                else if (data.status === 'connecting') updateStatus('connecting');
+                else updateStatus('offline');
+            })
+            .catch(() => {});
+    }, 10000);
+
+    // ==================== LOAD ====================
+    loadCommands();
+    addLog('🔥 Panel Varszz siap dipake! Gas admin!', 'success');
+    checkStatus();
+</script>
+
+</body>
+</html>
